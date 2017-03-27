@@ -1,7 +1,7 @@
 {
   "name": "replace-x",
   "description": "Command line search and replace utility",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/Xotic750/replace-x",
   "author": {
     "name": "Graham Fairweather",
@@ -41,19 +41,18 @@
     "lodash.isnull": "^3.0.0",
     "minimatch": "^3.0.3",
     "nomnom": "^1.8.1",
-    "object.assign": "^4.0.4",
     "validate.io-undefined": "^1.0.3",
-    "xregexp": "^3.1.1"
+    "xregexp": "^3.1.1",
+    "es5-shim": "^4.5.9",
+    "es6-shim": "^0.35.3",
+    "es7-shim": "^6.0.0",
+    "json3": "^3.3.2"
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^11.0.0",
     "chai": "^3.5.0",
-    "es5-shim": "^4.5.9",
-    "es6-shim": "^0.35.3",
-    "es7-shim": "^6.0.0",
     "eslint": "^3.18.0",
     "eslint-plugin-import": "^2.2.0",
-    "json3": "^3.3.2",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "nsp": "^2.6.3"

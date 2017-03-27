@@ -1,16 +1,31 @@
 #!/usr/bin/env node
 
 /* eslint sort-keys: 1 */
+/* global JSON:true */
 
 'use strict';
 
-var assign = Object.assign || require('object.assign');
+require('es5-shim');
+require('es5-shim/es5-sham');
+if (typeof JSON === 'undefined') {
+  JSON = {};
+}
+require('json3').runInContext(null, JSON);
+require('es6-shim');
+var es7 = require('es7-shim');
+Object.keys(es7).forEach(function (key) {
+  var obj = es7[key];
+  if (typeof obj.shim === 'function') {
+    obj.shim();
+  }
+});
+
 var nomnom = require('nomnom');
 var replace = require('../');
 var opts = require('./shared-options-x')();
 
 /* Additional options that apply to `replace`, but not `search` */
-assign(opts, {
+Object.assign(opts, {
   replacement: {
     position: 1,
     help: 'Replacement string for matches',
