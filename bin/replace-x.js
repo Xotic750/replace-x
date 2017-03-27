@@ -4,12 +4,13 @@
 
 'use strict';
 
+var assign = Object.assign || require('object.assign');
 var nomnom = require('nomnom');
 var replace = require('../');
-var sharedOptions = require('./shared-options-x');
+var opts = require('./shared-options-x')();
 
 /* Additional options that apply to `replace`, but not `search` */
-var addlOptions = {
+assign(opts, {
   replacement: {
     position: 1,
     help: 'Replacement string for matches',
@@ -44,16 +45,7 @@ var addlOptions = {
     flag: true,
     help: "Preview the replacements, but don't modify files"
   }
-};
-
-var opts = {};
-Object.keys(sharedOptions).forEach(function (key) {
-  opts[key] = sharedOptions[key];
-});
-Object.keys(addlOptions).forEach(function (key) {
-  opts[key] = addlOptions[key];
 });
 
 var options = nomnom.options(opts).script('replace').parse();
-
 replace(options);

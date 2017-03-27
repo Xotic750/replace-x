@@ -3,16 +3,18 @@
 
 'use strict';
 
+var forEach = require('foreach');
 var fs = require('fs');
 var path = require('path');
-var colors = require('colors');
+var colors = require('colors'); // eslint-disable-line no-unused-vars
 var minimatch = require('minimatch');
 var isUndefined = require('validate.io-undefined');
 var isRegex = require('is-regex');
 var hasOwnProp = require('has-own-property-x');
 var isNull = require('lodash.isnull');
 var xRegExp = require('xregexp');
-var sharedOptions = require('./bin/shared-options-x');
+var sharedOptions = require('./bin/shared-options-x')();
+require('colors');
 
 var getFlags = function (options) {
   var flags = 'g'; // global multiline
@@ -29,7 +31,10 @@ var getFlags = function (options) {
 };
 
 var getRegExp = function (options) {
-  return isRegex(options.regex) ? options.regex : xRegExp(options.regex, getFlags(options));
+  if (isRegex(options.regex) || xRegExp.isRegExp(options.regex)) {
+    return options.regex;
+  }
+  return xRegExp(options.regex, getFlags(options));
 };
 
 var getOptionList = function (list, def) {
@@ -65,7 +70,7 @@ var makeReplaceText = function (options, canReplace) {
     var printout = options.noColor ? file : file[options.fileColor] || file;
     if (options.count) {
       var count = ' (' + match.length + ')';
-      printout += options.noColor ? count : colors.grey(count);
+      printout += options.noColor ? count : count.grey;
     }
 
     process.stdout.write(printout + '\n');
@@ -152,7 +157,8 @@ var makeReplacefile = function (options, canReplace, replacizeText) {
           if (err) {
             throw err;
           }
-          files.forEach(function (f) {
+
+          forEach(files, function (f) {
             rf(path.join(file, f));
           });
         });
@@ -184,7 +190,7 @@ var makeReplaceFileSync = function (options, canReplace, replaceText) {
         }
       }
     } else if (stats.isDirectory() && options.recursive) {
-      fs.readdirSync(file).forEach(function (f) {
+      forEach(fs.readdirSync(file), function (f) {
         rfs(path.join(file, f));
       });
     }
@@ -211,7 +217,7 @@ module.exports = function replaceX(options) {
   var replaceFile = makeReplacefile(options, canReplace, replaceText);
   var replaceFileSync = makeReplaceFileSync(options, canReplace, replaceText);
 
-  options.paths.forEach(function (p) {
+  forEach(options.paths, function (p) {
     if (options.async) {
       replaceFile(p);
     } else {
