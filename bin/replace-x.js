@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 /* eslint sort-keys: 1 */
-/* global JSON:true */
 
 'use strict';
 

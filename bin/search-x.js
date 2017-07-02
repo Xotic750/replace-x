@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* global JSON:true */
-
 'use strict';
 
 require('es5-shim');

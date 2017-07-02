@@ -1,6 +1,3 @@
-/* eslint sort-keys: 1, max-statements: 1 */
-/* global JSON:true, describe, it */
-
 'use strict';
 
 require('es5-shim');
@@ -31,9 +28,9 @@ describe('sanity replace', function () {
     var file = './test/test_files/test_basic.txt';
 
     replace({
+      paths: [file],
       regex: 'a',
-      replacement: 'b',
-      paths: [file]
+      replacement: 'b'
     });
 
     var actual = getText(file);
@@ -41,9 +38,9 @@ describe('sanity replace', function () {
     expect(actual).to.equal(expected, 'single letter replace works');
 
     replace({
+      paths: [file],
       regex: 'b',
-      replacement: 'a',
-      paths: [file]
+      replacement: 'a'
     });
 
     actual = getText(file);
@@ -55,9 +52,9 @@ describe('sanity replace', function () {
     var file = './test/test_files/test_numbers.txt';
 
     replace({
+      paths: [file],
       regex: '123',
-      replacement: '456',
-      paths: [file]
+      replacement: '456'
     });
 
     var actual = getText(file);
@@ -65,9 +62,9 @@ describe('sanity replace', function () {
     expect(actual).to.equal(expected, 'number replace works');
 
     replace({
+      paths: [file],
       regex: '456',
-      replacement: '123',
-      paths: [file]
+      replacement: '123'
     });
 
     actual = getText(file);
@@ -79,10 +76,10 @@ describe('sanity replace', function () {
     var file = './test/test_files/test_multiline.txt';
 
     replace({
-      regex: 'c$',
-      replacement: 't',
+      multiline: false,
       paths: [file],
-      multiline: false
+      regex: 'c$',
+      replacement: 't'
     });
 
     var actual = getText(file);
@@ -90,10 +87,10 @@ describe('sanity replace', function () {
     expect(actual).to.equal(expected, "$ shouldn't match without multiline");
 
     replace({
-      regex: 'c$',
-      replacement: 't',
+      multiline: true,
       paths: [file],
-      multiline: true
+      regex: 'c$',
+      replacement: 't'
     });
 
     actual = getText(file);
@@ -101,10 +98,10 @@ describe('sanity replace', function () {
     expect(actual).to.equal(expected, 'with multiline, $ should match eol');
 
     replace({
-      regex: 't$',
-      replacement: 'c',
+      multiline: true,
       paths: [file],
-      multiline: true
+      regex: 't$',
+      replacement: 'c'
     });
 
     actual = getText(file);
@@ -116,10 +113,10 @@ describe('sanity replace', function () {
     var file = './test/test_files/test_case.txt';
 
     replace({
-      regex: 'a',
-      replacement: 'c',
+      ignoreCase: true,
       paths: [file],
-      ignoreCase: true
+      regex: 'a',
+      replacement: 'c'
     });
 
     var actual = getText(file);
@@ -127,9 +124,9 @@ describe('sanity replace', function () {
     expect(actual).to.equal(expected, 'case insensitive replace');
 
     replace({
+      paths: [file],
       regex: 'c',
-      replacement: 'A',
-      paths: [file]
+      replacement: 'A'
     });
 
     actual = getText(file);
@@ -141,10 +138,10 @@ describe('sanity replace', function () {
     var file = './test/test_files/test_preview.txt';
 
     replace({
-      regex: 'a',
-      replacement: 'c',
       paths: [file],
-      preview: true
+      preview: true,
+      regex: 'a',
+      replacement: 'c'
     });
 
     var actual = getText(file);
@@ -156,50 +153,50 @@ describe('sanity replace', function () {
     var file = './test/test_files/.test';
 
     replace({
-      regex: 'dot',
-      replacement: 'DOT',
+      dot: true,
+      include: '*',
       paths: [file],
       recursive: true,
-      include: '*',
-      dot: true
+      regex: 'dot',
+      replacement: 'DOT'
     });
 
     var expected = 'DOT';
     expect(getText(file)).to.equal(expected, '- found a file that start with dot');
 
     replace({
-      regex: 'DOT',
-      replacement: 'dot',
+      dot: true,
+      include: '*',
       paths: [file],
       recursive: true,
-      include: '*',
-      dot: true
+      regex: 'DOT',
+      replacement: 'dot'
     });
 
     expected = 'dot';
     expect(getText(file)).to.equal(expected, 'reverting worked');
 
     replace({
-      regex: 'dot',
-      replacement: 'DOT',
+      dot: false,
+      fileColor: 'red',
+      include: '*',
       paths: [file],
       recursive: true,
-      include: '*',
-      fileColor: 'red',
-      dot: false
+      regex: 'dot',
+      replacement: 'DOT'
     });
 
     expected = 'dot';
     expect(getText(file)).to.equal(expected, '- default without dot still working');
 
     replace({
-      regex: 'DOT',
-      replacement: 'dot',
+      dot: false,
+      fileColor: 'red',
+      include: '*',
       paths: [file],
       recursive: true,
-      include: '*',
-      fileColor: 'red',
-      dot: false
+      regex: 'DOT',
+      replacement: 'dot'
     });
 
     expected = 'dot';

@@ -1,7 +1,7 @@
 {
   "name": "replace-x",
   "description": "Command line search and replace utility",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "homepage": "https://github.com/Xotic750/replace-x",
   "author": {
     "name": "Graham Fairweather",
@@ -35,32 +35,40 @@
   },
   "dependencies": {
     "colors": "^1.1.2",
-    "foreach": "^2.0.5",
-    "has-own-property-x": "^1.1.1",
-    "is-regex": "^1.0.4",
-    "lodash.isnull": "^3.0.0",
-    "minimatch": "^3.0.3",
-    "nomnom": "^1.8.1",
-    "validate.io-undefined": "^1.0.3",
-    "xregexp": "^3.1.1",
     "es5-shim": "^4.5.9",
     "es6-shim": "^0.35.3",
     "es7-shim": "^6.0.0",
-    "json3": "^3.3.2"
+    "is-regex": "^1.0.4",
+    "json3": "^3.3.2",
+    "lodash.isnull": "^3.0.0",
+    "minimatch": "^3.0.4",
+    "nomnom": "^1.8.1",
+    "validate.io-undefined": "^1.0.3",
+    "xregexp": "^3.2.0"
   },
   "devDependencies": {
-    "@ljharb/eslint-config": "^11.0.0",
-    "chai": "^3.5.0",
-    "eslint": "^3.18.0",
-    "eslint-plugin-import": "^2.2.0",
-    "mocha": "^3.2.0",
+    "@xotic750/eslint-config-standard-x": "^1.4.0",
+    "chai": "^4.0.2",
+    "eslint": "^4.1.1",
+    "eslint-plugin-compat": "^1.0.4",
+    "eslint-plugin-css-modules": "^2.7.2",
+    "eslint-plugin-eslint-comments": "^1.0.2",
+    "eslint-plugin-jsdoc": "^3.1.1",
+    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-no-use-extend-native": "^0.3.12",
+    "husky": "^0.13.4",
+    "mocha": "^3.4.2",
     "nodemon": "^1.11.0",
     "nsp": "^2.6.3"
   },
   "scripts": {
-    "build": "npm run security && npm run eslint && npm test",
+    "build": "npm run lint && npm test && npm run security",
+    "start": "nodemon --watch index.js --exec 'npm run build'",
+    "lint": "eslint *.js bin/*.js test/*.js",
+    "lint-fix": "eslint --fix *.js bin/*.js test/*.js",
+    "security": "nsp check",
     "test": "mocha",
-    "eslint": "eslint *.js test/*.js",
-    "security": "nsp check"
+    "precommit": "npm run build",
+    "prepush": "npm run build"
   }
 }

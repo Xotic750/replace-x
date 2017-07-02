@@ -1,6 +1,3 @@
-/* eslint sort-keys: 1, max-statements: 1, max-nested-callbacks:  1 */
-/* global JSON:true, describe, it */
-
 'use strict';
 
 require('es5-shim');
@@ -29,16 +26,17 @@ var getText = function (file) {
 describe('paths replace', function () {
   it('recursive', function () {
     replace({
-      regex: 'a',
-      replacement: 'b',
       paths: ['test/test_files/test_paths'],
-      recursive: true
+      recursive: true,
+      regex: 'a',
+      replacement: 'b'
     });
 
     var changedFiles = [
       './test/test_files/test_paths/test1.txt',
       './test/test_files/test_paths/test2.txt',
-      './test/test_files/test_paths/sample1.txt'];
+      './test/test_files/test_paths/sample1.txt'
+    ];
     var expected = 'bbbb';
     changedFiles.forEach(function (file) {
       expect(getText(file)).to.equal(expected, 'recursive replace on directory ' + file);
@@ -49,10 +47,10 @@ describe('paths replace', function () {
     expect(getText(ignored)).to.equal(expected, 'skip file with match in defaultignore');
 
     replace({
-      regex: 'b',
-      replacement: 'a',
       paths: ['test/test_files/test_paths'],
-      recursive: true
+      recursive: true,
+      regex: 'b',
+      replacement: 'a'
     });
 
     changedFiles.forEach(function (file) {
@@ -62,16 +60,14 @@ describe('paths replace', function () {
 
   it('include', function () {
     replace({
-      regex: 'a',
-      replacement: 'b',
+      include: 'sample*.txt',
       paths: ['test/test_files/test_paths'],
       recursive: true,
-      include: 'sample*.txt'
+      regex: 'a',
+      replacement: 'b'
     });
 
-    var changedFiles = [
-      './test/test_files/test_paths/sample1.txt'
-    ];
+    var changedFiles = ['./test/test_files/test_paths/sample1.txt'];
     var expected = 'bbbb';
     changedFiles.forEach(function (file) {
       expect(getText(file)).to.equal(expected, 'replace in included file ' + file);
@@ -80,17 +76,18 @@ describe('paths replace', function () {
     var ignoredFiles = [
       './test/test_files/test_paths/test1.txt',
       './test/test_files/test_paths/test2.txt',
-      './test/test_files/test_paths/test.png'];
+      './test/test_files/test_paths/test.png'
+    ];
     expected = 'aaaa';
     ignoredFiles.forEach(function (file) {
       expect(getText(file)).to.equal(expected, "don't replace in not-included file " + file);
     });
 
     replace({
-      regex: 'b',
-      replacement: 'a',
       paths: ['test/test_files/test_paths'],
-      recursive: true
+      recursive: true,
+      regex: 'b',
+      replacement: 'a'
     });
 
     expected = 'aaaa';
@@ -101,34 +98,30 @@ describe('paths replace', function () {
 
   it('exclude', function () {
     replace({
-      regex: 'a',
-      replacement: 'b',
+      exclude: '*sample*.txt',
       paths: ['test/test_files/test_paths'],
       recursive: true,
-      exclude: '*sample*.txt'
+      regex: 'a',
+      replacement: 'b'
     });
 
-    var changedFiles = [
-      './test/test_files/test_paths/test1.txt',
-      './test/test_files/test_paths/test2.txt'];
+    var changedFiles = ['./test/test_files/test_paths/test1.txt', './test/test_files/test_paths/test2.txt'];
     var expected = 'bbbb';
     changedFiles.forEach(function (file) {
       expect(getText(file)).to.equal(expected, 'replace in non-excluded file ' + file);
     });
 
-    var ignoredFiles = [
-      './test/test_files/test_paths/sample1.txt',
-      './test/test_files/test_paths/test.png'];
+    var ignoredFiles = ['./test/test_files/test_paths/sample1.txt', './test/test_files/test_paths/test.png'];
     expected = 'aaaa';
     ignoredFiles.forEach(function (file) {
       expect(getText(file)).to.equal(expected, "don't replace in excluded file " + file);
     });
 
     replace({
-      regex: 'b',
-      replacement: 'a',
       paths: ['test/test_files/test_paths'],
-      recursive: true
+      recursive: true,
+      regex: 'b',
+      replacement: 'a'
     });
 
     expected = 'aaaa';
