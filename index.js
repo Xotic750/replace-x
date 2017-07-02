@@ -229,7 +229,7 @@ module.exports = function replaceX(options) {
 
   opts.encoding = sharedOptions.encoding.choices.includes(opts.encoding) ? opts.encoding : 'utf-8';
   opts.color = sharedOptions.color.choices.includes(opts.color) ? opts.color : 'cyan';
-  opts.fileColor = sharedOptions.fileColor.choices.includes(opts.color) ? opts.color : 'yellow';
+  opts.fileColor = sharedOptions.fileColor.choices.includes(opts.fileColor) ? opts.fileColor : 'yellow';
   var canReplace = isFalsey(opts.preview) && not(isUndefined(opts.replacement));
   var replaceText = makeReplaceText(opts, canReplace);
   var replaceFile = makeReplacefile(opts, canReplace, replaceText);
