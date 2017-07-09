@@ -1,7 +1,7 @@
 {
   "name": "replace-x",
   "description": "Command line search and replace utility",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "homepage": "https://github.com/Xotic750/replace-x",
   "author": {
     "name": "Graham Fairweather",
@@ -23,7 +23,7 @@
     "search-x": "./bin/search-x.js"
   },
   "engines": {
-    "node": ">=4.3.0 <5.0.0 || >=6.0.0 <7.0.0 || >= 8.0.0",
+    "node": ">=4.3.0",
     "npm": ">=3.10.10",
     "yarn": ">=0.24.5"
   },
@@ -49,7 +49,7 @@
     "xregexp": "^3.2.0"
   },
   "devDependencies": {
-    "@xotic750/eslint-config-standard-x": "^2.1.1",
+    "@xotic750/eslint-config-standard-x": "^2.2.1",
     "chai": "^4.0.2",
     "eslint": "^4.2.0",
     "eslint-plugin-compat": "^1.0.4",
