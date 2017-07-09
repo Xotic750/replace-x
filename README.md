@@ -19,6 +19,8 @@ alt="npm version" height="18">
 </a>
 
 # replace
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Xotic750/replace-x.svg)](https://greenkeeper.io/)
 `replace-x` is a command line utility for performing in place search-and-replace on files. It's similar to sed but there are a few differences:
 
 * Modifies files when matches are found
