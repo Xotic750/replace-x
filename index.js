@@ -216,12 +216,12 @@ var makeReplaceFileSync = function _mrfs(options, canReplace, replaceText) {
 
 module.exports = function replaceX(options) {
   var opts = Object.assign({}, options);
-  opts.paths = Array.isArray(opts.paths) ? opts.paths.slice() : sharedOptions.paths.default.slice();
+  opts.paths = Array.isArray(opts.paths) ? opts.paths.slice() : sharedOptions.paths['default'].slice();
 
   // If the path is the same as the default and the recursive option was not
   // specified, search recursively under the current directory as a
   // convenience.
-  var pathSame = opts.paths.length === 1 && opts.paths[0] === sharedOptions.paths.default[0];
+  var pathSame = opts.paths.length === 1 && opts.paths[0] === sharedOptions.paths['default'][0];
   if (pathSame && not(hasOwnProp(opts, 'recursive'))) {
     opts.paths = ['.'];
     opts.recursive = true;
