@@ -1,0 +1,6 @@
+!.eslintrc.js
+!jest.config.js
+dist/
+node_modules/
+__tests__/
+package-lock.json
