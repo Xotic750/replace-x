@@ -1,34 +1,33 @@
-'use strict';
-
 require('./loadShims');
-var fs = require('fs');
-var path = require('path');
-var minimatch = require('minimatch');
-var isUndefined = require('validate.io-undefined');
-var isRegex = require('is-regex');
-var isNull = require('lodash.isnull');
-var xRegExp = require('xregexp');
-var sharedOptions = require('./bin/shared-options-x')();
+const fs = require('fs');
+const path = require('path');
+const minimatch = require('minimatch');
+const isUndefined = require('lodash/isUndefined');
+const isRegex = require('is-regex');
+const isNull = require('lodash/isNull');
+const xRegExp = require('xregexp');
+const sharedOptions = require('./bin/shared-options-x')();
 require('colors');
 
-var hasOwnProp = function _hasOwnProp(obj, prop) {
+const hasOwnProp = function _hasOwnProp(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 };
 
-var not = function _not(value) {
+const not = function _not(value) {
   return Boolean(value) === false;
 };
 
-var isFalsey = function _isFalsey(value) {
+const isFalsey = function _isFalsey(value) {
   return not(value);
 };
 
-var isStringType = function _isStringType(value) {
+const isStringType = function _isStringType(value) {
   return typeof value === 'string';
 };
 
-var getFlags = function _getFlags(options) {
-  var flags = 'g'; // global multiline
+const getFlags = function _getFlags(options) {
+  let flags = 'g'; // global multiline
+
   if (options.ignoreCase) {
     flags += 'i';
   }
@@ -44,7 +43,7 @@ var getFlags = function _getFlags(options) {
   return flags;
 };
 
-var getRegExp = function _getRegExp(options) {
+const getRegExp = function _getRegExp(options) {
   if (isRegex(options.regex) || xRegExp.isRegExp(options.regex)) {
     return options.regex;
   }
@@ -52,69 +51,76 @@ var getRegExp = function _getRegExp(options) {
   return xRegExp(options.regex, getFlags(options));
 };
 
-var getOptionList = function _getOptionList(list, def) {
+const getOptionList = function _getOptionList(list, def) {
   return list ? list.split(',') : def;
 };
 
-var canSearch = function _canSearch(file, isFile, options) {
-  var includes = getOptionList(options.include, null);
-  var ignoreFile = options.excludeList || path.join(__dirname, '/defaultignore');
-  var ignores = fs.readFileSync(ignoreFile, options.encoding).split('\n');
-  var excludes = getOptionList(options.exclude, []).concat(ignores);
-  var inIncludes = includes && includes.some(function _some1(include) {
-    return minimatch(file, include, { dot: options.dot, matchBase: true });
-  });
+const canSearch = function _canSearch(file, isFile, options) {
+  const includes = getOptionList(options.include, null);
+  const ignoreFile = options.excludeList || path.join(__dirname, '/defaultignore');
+  const ignores = fs.readFileSync(ignoreFile, options.encoding).split('\n');
+  const excludes = getOptionList(options.exclude, []).concat(ignores);
+  const inIncludes =
+    includes &&
+    includes.some(function _some1(include) {
+      return minimatch(file, include, {dot: options.dot, matchBase: true});
+    });
 
-  var inExcludes = excludes.some(function _some2(exclude) {
-    return minimatch(file, exclude, { dot: options.dot, matchBase: true });
+  const inExcludes = excludes.some(function _some2(exclude) {
+    return minimatch(file, exclude, {dot: options.dot, matchBase: true});
   });
 
   return (isFalsey(includes) || not(isFile) || inIncludes) && not(inExcludes);
 };
 
-var makeReplaceText = function _makeReplaceText(options, canReplace) {
-  var lineCount = 0;
+const makeReplaceText = function _makeReplaceText(options, canReplace) {
+  let lineCount = 0;
   // The posix standard specifies that conforming sed implementations shall
   // support at least 8192 byte line lengths.
-  var limit = 400; // chars per line
-  var regex = getRegExp(options);
-  var replaceFunc;
+  const limit = 400; // chars per line
+  const regex = getRegExp(options);
+  let replaceFunc;
+
   if (isStringType(options.funcFile)) {
-    // eslint-disable-next-line no-eval
-    eval('replaceFunc = ' + fs.readFileSync(options.funcFile, options.encoding));
+    /* eslint-disable-next-line no-eval */
+    eval(`replaceFunc = ${fs.readFileSync(options.funcFile, options.encoding)}`);
   }
 
-  var print = function _print(file, match) {
-    var printout = options.noColor ? file : file[options.fileColor] || file;
+  const print = function _print(file, match) {
+    let printout = options.noColor ? file : file[options.fileColor] || file;
+
     if (options.count) {
-      var count = ' (' + match.length + ')';
+      const count = ` (${match.length})`;
       printout += options.noColor ? count : count.grey;
     }
 
-    process.stdout.write(printout + '\n');
+    process.stdout.write(`${printout}\n`);
   };
 
-  var printer = function _printer(line, index) {
+  const printer = function _printer(line, index) {
     if (line.match(regex)) {
       lineCount += 1;
+
       if (lineCount > options.maxLines) {
         return true;
       }
 
-      var replacement = String(options.replacement) || '$&';
+      let replacement = String(options.replacement) || '$&';
+
       if (isFalsey(options.noColor)) {
         replacement = replacement[options.color];
       }
 
-      var val = line.replace(regex, replaceFunc || replacement).slice(0, limit);
-      process.stdout.write(' ' + (index + 1) + ': ' + val + '\n');
+      const val = line.replace(regex, replaceFunc || replacement).slice(0, limit);
+      process.stdout.write(` ${index + 1}: ${val}\n`);
     }
 
     return false;
   };
 
   return function replaceText(text, file) {
-    var match = text.match(regex);
+    const match = text.match(regex);
+
     if (isFalsey(match)) {
       return null;
     }
@@ -127,12 +133,12 @@ var makeReplaceText = function _makeReplaceText(options, canReplace) {
       text.split('\n').some(printer);
     }
 
-    return canReplace ? text.replace(regex, replaceFunc || String(options.replacement)) : void 0;
+    return canReplace ? text.replace(regex, replaceFunc || String(options.replacement)) : undefined;
   };
 };
 
-var makeReplacefile = function _makeReplacefile(options, canReplace, replacizeText) {
-  var rf = function replaceFile(file) {
+const makeReplacefile = function _makeReplacefile(options, canReplace, replacizeText) {
+  const rf = function replaceFile(file) {
     fs.lstat(file, function _lstat(error, stats) {
       if (error) {
         throw error;
@@ -143,7 +149,8 @@ var makeReplacefile = function _makeReplacefile(options, canReplace, replacizeTe
         return;
       }
 
-      var isFile = stats.isFile();
+      const isFile = stats.isFile();
+
       if (not(canSearch(file, isFile, options))) {
         return;
       }
@@ -158,7 +165,8 @@ var makeReplacefile = function _makeReplacefile(options, canReplace, replacizeTe
             throw err;
           }
 
-          var txt = replacizeText(text, file);
+          const txt = replacizeText(text, file);
+
           if (canReplace && not(isNull(txt))) {
             fs.writeFile(file, txt, function _writeFile(e) {
               if (e) {
@@ -168,7 +176,7 @@ var makeReplacefile = function _makeReplacefile(options, canReplace, replacizeTe
           }
         });
       } else if (stats.isDirectory() && options.recursive) {
-        fs.readdir(file, function (err, files) {
+        fs.readdir(file, function cb(err, files) {
           if (err) {
             throw err;
           }
@@ -184,22 +192,25 @@ var makeReplacefile = function _makeReplacefile(options, canReplace, replacizeTe
   return rf;
 };
 
-var makeReplaceFileSync = function _mrfs(options, canReplace, replaceText) {
-  var rfs = function replaceFileSync(file) {
-    var stats = fs.lstatSync(file);
+const makeReplaceFileSync = function _mrfs(options, canReplace, replaceText) {
+  const rfs = function replaceFileSync(file) {
+    const stats = fs.lstatSync(file);
+
     if (stats.isSymbolicLink()) {
       // don't follow symbolic links for now
       return;
     }
 
-    var isFile = stats.isFile();
+    const isFile = stats.isFile();
+
     if (not(canSearch(file, isFile, options))) {
       return;
     }
 
     if (isFile) {
       if (canReplace) {
-        var text = replaceText(fs.readFileSync(file, options.encoding), file);
+        const text = replaceText(fs.readFileSync(file, options.encoding), file);
+
         if (isNull(text) === false) {
           fs.writeFileSync(file, text);
         }
@@ -215,13 +226,14 @@ var makeReplaceFileSync = function _mrfs(options, canReplace, replaceText) {
 };
 
 module.exports = function replaceX(options) {
-  var opts = Object.assign({}, options);
-  opts.paths = Array.isArray(opts.paths) ? opts.paths.slice() : sharedOptions.paths['default'].slice();
+  const opts = {...options};
+  opts.paths = Array.isArray(opts.paths) ? opts.paths.slice() : sharedOptions.paths.default.slice();
 
   // If the path is the same as the default and the recursive option was not
   // specified, search recursively under the current directory as a
   // convenience.
-  var pathSame = opts.paths.length === 1 && opts.paths[0] === sharedOptions.paths['default'][0];
+  const pathSame = opts.paths.length === 1 && opts.paths[0] === sharedOptions.paths.default[0];
+
   if (pathSame && not(hasOwnProp(opts, 'recursive'))) {
     opts.paths = ['.'];
     opts.recursive = true;
@@ -230,10 +242,10 @@ module.exports = function replaceX(options) {
   opts.encoding = sharedOptions.encoding.choices.includes(opts.encoding) ? opts.encoding : 'utf-8';
   opts.color = sharedOptions.color.choices.includes(opts.color) ? opts.color : 'cyan';
   opts.fileColor = sharedOptions.fileColor.choices.includes(opts.fileColor) ? opts.fileColor : 'yellow';
-  var canReplace = isFalsey(opts.preview) && not(isUndefined(opts.replacement));
-  var replaceText = makeReplaceText(opts, canReplace);
-  var replaceFile = makeReplacefile(opts, canReplace, replaceText);
-  var replaceFileSync = makeReplaceFileSync(opts, canReplace, replaceText);
+  const canReplace = isFalsey(opts.preview) && not(isUndefined(opts.replacement));
+  const replaceText = makeReplaceText(opts, canReplace);
+  const replaceFile = makeReplacefile(opts, canReplace, replaceText);
+  const replaceFileSync = makeReplaceFileSync(opts, canReplace, replaceText);
 
   opts.paths.forEach(function _for2(p) {
     if (opts.async) {
