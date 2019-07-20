@@ -98,7 +98,7 @@ search-x "setTimeout" . -r
 You can use replace from your JS program:
 
 ```javascript
-var replace = require('replace-x');
+import replace from 'replace-x';
 
 replace({
   regex: 'foo',
