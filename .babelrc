@@ -9,7 +9,7 @@
         "useBuiltIns": false,
         "debug": false,
         "targets": {
-          "node": "current"
+          "node": "8.11.4"
         },
         "ignoreBrowserslistConfig": true
       }
@@ -27,7 +27,7 @@
             "useBuiltIns": false,
             "debug": false,
             "targets": {
-              "node": "current"
+              "node": "8.11.4"
             },
             "ignoreBrowserslistConfig": true
           }
