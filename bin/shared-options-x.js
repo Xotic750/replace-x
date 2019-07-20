@@ -42,7 +42,7 @@ module.exports = function getSharedOptions() {
       full: 'exclude-list',
       metavar: 'FILE',
       help: 'File containing a new-line separated list of files to ignore',
-      default: path.join(__dirname, '..', 'defaultignore'),
+      default: path.join(__dirname, 'defaultignore'),
       hidden: true,
     },
     maxLines: {
