@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-require('../loadShims');
 const nomnom = require('nomnom');
-const replace = require('../');
+const assign = require('lodash/assign');
+const replace = require('../dist/replace-x');
 const opts = require('./shared-options-x')();
 
 /* Additional options that apply to `replace`, but not `search` */
-Object.assign(opts, {
+assign(opts, {
   replacement: {
     position: 1,
     help: 'Replacement string for matches',

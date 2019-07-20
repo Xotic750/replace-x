@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-require('../loadShims');
 const nomnom = require('nomnom');
-const replace = require('../');
+const replace = require('../dist/replace-x');
 const sharedOptions = require('./shared-options-x')();
 
 const options = nomnom

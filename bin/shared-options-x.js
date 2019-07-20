@@ -1,4 +1,3 @@
-require('../loadShims');
 const path = require('path');
 
 module.exports = function getSharedOptions() {

@@ -2,7 +2,7 @@
 
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: ['<rootDir>/index.js'],
+  collectCoverageFrom: ['<rootDir>/dist/replace-x.js'],
   coverageDirectory: '__tests__/coverage/',
   moduleNameMapper: {
     '^RootDir/(.*)$': '<rootDir>/$1',

@@ -1,6 +1,5 @@
-require('../loadShims');
 const fs = require('fs');
-const replace = require('../');
+const replace = require('../dist/replace-x').default;
 
 const getText = function(file) {
   return fs.readFileSync(file, 'utf-8');

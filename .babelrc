@@ -1,0 +1,39 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": false,
+        "modules": "commonjs",
+        "spec": true,
+        "useBuiltIns": false,
+        "debug": false,
+        "targets": {
+          "node": "current"
+        },
+        "ignoreBrowserslistConfig": true
+      }
+    ]
+  ],
+  "env": {
+    "esm": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "loose": false,
+            "modules": false,
+            "spec": true,
+            "useBuiltIns": false,
+            "debug": false,
+            "targets": {
+              "node": "current"
+            },
+            "ignoreBrowserslistConfig": true
+          }
+        ]
+      ]
+    }
+  },
+  "plugins": []
+}

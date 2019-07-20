@@ -1,31 +1,31 @@
-require('./loadShims');
-const fs = require('fs');
-const path = require('path');
-const minimatch = require('minimatch');
-const isUndefined = require('lodash/isUndefined');
-const isRegex = require('is-regex');
-const isNull = require('lodash/isNull');
-const xRegExp = require('xregexp');
-const sharedOptions = require('./bin/shared-options-x')();
-require('colors');
+import fs from 'fs';
+import path from 'path';
+import minimatch from 'minimatch';
+import isUndefined from 'lodash/isUndefined';
+import isRegex from 'is-regexp-x';
+import isNull from 'lodash/isNull';
+import xRegExp from 'xregexp';
+import sharedOptionsFactory from '../bin/shared-options-x';
+import 'colors';
+const sharedOptions = sharedOptionsFactory();
 
-const hasOwnProp = function _hasOwnProp(obj, prop) {
+const hasOwnProp = function hasOwnProp(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 };
 
-const not = function _not(value) {
+const not = function not(value) {
   return Boolean(value) === false;
 };
 
-const isFalsey = function _isFalsey(value) {
+const isFalsey = function isFalsey(value) {
   return not(value);
 };
 
-const isStringType = function _isStringType(value) {
+const isStringType = function isStringType(value) {
   return typeof value === 'string';
 };
 
-const getFlags = function _getFlags(options) {
+const getFlags = function getFlags(options) {
   let flags = 'g'; // global multiline
 
   if (options.ignoreCase) {
@@ -43,7 +43,7 @@ const getFlags = function _getFlags(options) {
   return flags;
 };
 
-const getRegExp = function _getRegExp(options) {
+const getRegExp = function getRegExp(options) {
   if (isRegex(options.regex) || xRegExp.isRegExp(options.regex)) {
     return options.regex;
   }
@@ -51,42 +51,48 @@ const getRegExp = function _getRegExp(options) {
   return xRegExp(options.regex, getFlags(options));
 };
 
-const getOptionList = function _getOptionList(list, def) {
+const getOptionList = function getOptionList(list, def) {
   return list ? list.split(',') : def;
 };
 
-const canSearch = function _canSearch(file, isFile, options) {
+const canSearch = function canSearch(file, isFile, options) {
   const includes = getOptionList(options.include, null);
   const ignoreFile = options.excludeList || path.join(__dirname, '/defaultignore');
   const ignores = fs.readFileSync(ignoreFile, options.encoding).split('\n');
   const excludes = getOptionList(options.exclude, []).concat(ignores);
-  const inIncludes =
-    includes &&
-    includes.some(function _some1(include) {
-      return minimatch(file, include, {dot: options.dot, matchBase: true});
+  const inIncludes = includes && includes.some(function iteratee(include) {
+    return minimatch(file, include, {
+      dot: options.dot,
+      matchBase: true
     });
-
-  const inExcludes = excludes.some(function _some2(exclude) {
-    return minimatch(file, exclude, {dot: options.dot, matchBase: true});
   });
-
+  const inExcludes = excludes.some(function iteratee(exclude) {
+    return minimatch(file, exclude, {
+      dot: options.dot,
+      matchBase: true
+    });
+  });
   return (isFalsey(includes) || not(isFile) || inIncludes) && not(inExcludes);
 };
 
-const makeReplaceText = function _makeReplaceText(options, canReplace) {
-  let lineCount = 0;
-  // The posix standard specifies that conforming sed implementations shall
+const makeReplaceText = function makeReplaceText(options, canReplace) {
+  let lineCount = 0; // The posix standard specifies that conforming sed implementations shall
   // support at least 8192 byte line lengths.
+
   const limit = 400; // chars per line
+
   const regex = getRegExp(options);
   let replaceFunc;
 
   if (isStringType(options.funcFile)) {
+    // noinspection JSUnresolvedFunction
+    const funcString = fs.readFileSync(options.funcFile, options.encoding);
     /* eslint-disable-next-line no-eval */
-    eval(`replaceFunc = ${fs.readFileSync(options.funcFile, options.encoding)}`);
+
+    eval(`replaceFunc = ${funcString}`);
   }
 
-  const print = function _print(file, match) {
+  const print = function print(file, match) {
     let printout = options.noColor ? file : file[options.fileColor] || file;
 
     if (options.count) {
@@ -97,7 +103,7 @@ const makeReplaceText = function _makeReplaceText(options, canReplace) {
     process.stdout.write(`${printout}\n`);
   };
 
-  const printer = function _printer(line, index) {
+  const printer = function printer(line, index) {
     if (line.match(regex)) {
       lineCount += 1;
 
@@ -137,9 +143,9 @@ const makeReplaceText = function _makeReplaceText(options, canReplace) {
   };
 };
 
-const makeReplacefile = function _makeReplacefile(options, canReplace, replacizeText) {
+const makeReplacefile = function makeReplacefile(options, canReplace, replacizeText) {
   const rf = function replaceFile(file) {
-    fs.lstat(file, function _lstat(error, stats) {
+    fs.lstat(file, function lstat(error, stats) {
       if (error) {
         throw error;
       }
@@ -156,7 +162,7 @@ const makeReplacefile = function _makeReplacefile(options, canReplace, replacize
       }
 
       if (isFile) {
-        fs.readFile(file, options.encoding, function _readFile(err, text) {
+        fs.readFile(file, options.encoding, function readFile(err, text) {
           if (err) {
             if (err.code === 'EMFILE') {
               throw new Error('Too many files, try running `replace` without --async');
@@ -168,7 +174,7 @@ const makeReplacefile = function _makeReplacefile(options, canReplace, replacize
           const txt = replacizeText(text, file);
 
           if (canReplace && not(isNull(txt))) {
-            fs.writeFile(file, txt, function _writeFile(e) {
+            fs.writeFile(file, txt, function writeFile(e) {
               if (e) {
                 throw e;
               }
@@ -181,7 +187,7 @@ const makeReplacefile = function _makeReplacefile(options, canReplace, replacize
             throw err;
           }
 
-          files.forEach(function _for1(f) {
+          files.forEach(function iteratee(f) {
             rf(path.join(file, f));
           });
         });
@@ -192,7 +198,7 @@ const makeReplacefile = function _makeReplacefile(options, canReplace, replacize
   return rf;
 };
 
-const makeReplaceFileSync = function _mrfs(options, canReplace, replaceText) {
+const makeReplaceFileSync = function makeReplaceFileSync(options, canReplace, replaceText) {
   const rfs = function replaceFileSync(file) {
     const stats = fs.lstatSync(file);
 
@@ -216,7 +222,7 @@ const makeReplaceFileSync = function _mrfs(options, canReplace, replaceText) {
         }
       }
     } else if (stats.isDirectory() && options.recursive) {
-      fs.readdirSync(file).forEach(function _readdirSync(f) {
+      fs.readdirSync(file).forEach(function readdirSync(f) {
         rfs(path.join(file, f));
       });
     }
@@ -225,13 +231,13 @@ const makeReplaceFileSync = function _mrfs(options, canReplace, replaceText) {
   return rfs;
 };
 
-module.exports = function replaceX(options) {
-  const opts = {...options};
-  opts.paths = Array.isArray(opts.paths) ? opts.paths.slice() : sharedOptions.paths.default.slice();
-
-  // If the path is the same as the default and the recursive option was not
+const replace = function replace(options) {
+  const opts = { ...options
+  };
+  opts.paths = Array.isArray(opts.paths) ? opts.paths.slice() : sharedOptions.paths.default.slice(); // If the path is the same as the default and the recursive option was not
   // specified, search recursively under the current directory as a
   // convenience.
+
   const pathSame = opts.paths.length === 1 && opts.paths[0] === sharedOptions.paths.default[0];
 
   if (pathSame && not(hasOwnProp(opts, 'recursive'))) {
@@ -246,8 +252,7 @@ module.exports = function replaceX(options) {
   const replaceText = makeReplaceText(opts, canReplace);
   const replaceFile = makeReplacefile(opts, canReplace, replaceText);
   const replaceFileSync = makeReplaceFileSync(opts, canReplace, replaceText);
-
-  opts.paths.forEach(function _for2(p) {
+  opts.paths.forEach(function iteratee(p) {
     if (opts.async) {
       replaceFile(p);
     } else {
@@ -255,3 +260,7 @@ module.exports = function replaceX(options) {
     }
   });
 };
+
+export default replace;
+
+//# sourceMappingURL=replace-x.esm.js.map
