@@ -2,7 +2,7 @@
 
 const nomnom = require('nomnom');
 const assign = require('lodash/assign');
-const replace = require('../dist/replace-x');
+const replace = require('../dist/replace-x').default;
 const opts = require('./shared-options-x')();
 
 /* Additional options that apply to `replace`, but not `search` */

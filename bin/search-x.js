@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const nomnom = require('nomnom');
-const replace = require('../dist/replace-x');
+const replace = require('../dist/replace-x').default;
 const sharedOptions = require('./shared-options-x')();
 
 const options = nomnom
