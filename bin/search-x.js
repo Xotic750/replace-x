@@ -6,6 +6,6 @@ const sharedOptions = require('./shared-options-x')();
 
 const options = nomnom
   .options(sharedOptions)
-  .script('search')
+  .script('search-x')
   .parse();
 replace(options);

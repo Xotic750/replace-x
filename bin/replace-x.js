@@ -45,6 +45,6 @@ assign(opts, {
 
 const options = nomnom
   .options(opts)
-  .script('replace')
+  .script('replace-x')
   .parse();
 replace(options);
