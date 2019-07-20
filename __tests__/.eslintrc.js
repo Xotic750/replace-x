@@ -5,6 +5,6 @@ module.exports = {
     'lodash/prefer-noop': 'off',
     'compat/compat': 'off',
     'prefer-rest-params': 'off',
-    'no-prototype-builtins': 'off'
+    'no-prototype-builtins': 'off',
   },
 };
