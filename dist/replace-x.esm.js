@@ -5,6 +5,12 @@ import isRegex from 'is-regexp-x';
 import xRegExp from 'xregexp';
 import sharedOptionsFactory from '../bin/shared-options-x';
 import 'colors';
+
+const isNil = function isNil(value) {
+  /* eslint-disable-next-line lodash/prefer-is-nil */
+  return typeof value === 'undefined' || value === null;
+};
+
 const sharedOptions = sharedOptionsFactory();
 const hasOwnProp = Function.call.bind(Object.prototype.hasOwnProperty);
 
@@ -102,7 +108,7 @@ const makeReplaceText = function makeReplaceText(options, canReplace) {
         return true;
       }
 
-      let replacement = String(options.replacement) || '$&';
+      let replacement = isNil(options.replacement) ? '$&' : String(options.replacement);
 
       if (!options.noColor) {
         replacement = replacement[options.color];
@@ -134,7 +140,7 @@ const makeReplaceText = function makeReplaceText(options, canReplace) {
   };
 };
 
-const makeReplacefile = function makeReplacefile(options, canReplace, replacizeText) {
+const makeReplacefile = function makeReplacefile(options, canReplace, replaceTextFn) {
   return function replaceFile(file) {
     fs.lstat(file, function lstat(error, stats) {
       if (error) {
@@ -162,7 +168,7 @@ const makeReplacefile = function makeReplacefile(options, canReplace, replacizeT
             throw err;
           }
 
-          const txt = replacizeText(text, file);
+          const txt = replaceTextFn(text, file);
 
           if (canReplace && txt !== null) {
             fs.writeFile(file, txt, function writeFile(e) {
@@ -187,7 +193,7 @@ const makeReplacefile = function makeReplacefile(options, canReplace, replacizeT
   };
 };
 
-const makeReplaceFileSync = function makeReplaceFileSync(options, canReplace, replaceText) {
+const makeReplaceFileSync = function makeReplaceFileSync(options, canReplace, replaceTextFn) {
   return function replaceFileSync(file) {
     const stats = fs.lstatSync(file);
 
@@ -203,12 +209,10 @@ const makeReplaceFileSync = function makeReplaceFileSync(options, canReplace, re
     }
 
     if (isFile) {
-      if (canReplace) {
-        const text = replaceText(fs.readFileSync(file, options.encoding), file);
+      const text = replaceTextFn(fs.readFileSync(file, options.encoding), file);
 
-        if (text !== null) {
-          fs.writeFileSync(file, text);
-        }
+      if (canReplace && text !== null) {
+        fs.writeFileSync(file, text);
       }
     } else if (stats.isDirectory() && options.recursive) {
       fs.readdirSync(file).forEach(function readdirSync(f) {
@@ -237,9 +241,9 @@ const replace = function replace(options) {
   opts.color = sharedOptions.color.choices.includes(opts.color) ? opts.color : 'cyan';
   opts.fileColor = sharedOptions.fileColor.choices.includes(opts.fileColor) ? opts.fileColor : 'yellow';
   const canReplace = !opts.preview && typeof opts.replacement !== 'undefined';
-  const replaceText = makeReplaceText(opts, canReplace);
+  const replaceTextFn = makeReplaceText(opts, canReplace);
   const makeReplaceFn = opts.async ? makeReplacefile : makeReplaceFileSync;
-  const replaceFileFn = makeReplaceFn(opts, canReplace, replaceText);
+  const replaceFileFn = makeReplaceFn(opts, canReplace, replaceTextFn);
   opts.paths.forEach(replaceFileFn);
 };
 
