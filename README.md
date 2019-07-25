@@ -26,8 +26,7 @@
   alt="jsDelivr hits" height="18">
 </a>
 
-
-# replace
+# replace-x
 
 `replace-x` is a command line utility for performing in place search-and-replace on files. It's similar to sed but there are a few differences:
 
