@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const parseArguments = require('./parse-arguments-x');
-const replace = require('../dist/replace-x');
+const replace = require('../dist/replace-x').default;
 
 /* Additional options that apply to `replace`, but not `search` */
 const positionalArgs = {

@@ -41,7 +41,7 @@ module.exports = function getSharedOptions() {
     'exclude-list': {
       string: true,
       describe: 'Path of file containing a new-line separated list of files to ignore',
-      default: path.join(__dirname, '..', 'defaultignore'),
+      default: path.join(__dirname, '..', 'dist', 'defaultignore'),
       hidden: true,
     },
     n: {
