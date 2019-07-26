@@ -1,50 +1,42 @@
 #!/usr/bin/env node
 
-const nomnom = require('nomnom');
-const assign = require('lodash/assign');
-const replace = require('../dist/replace-x').default;
-const opts = require('./shared-options-x')();
+const parseArguments = require('./parse-arguments-x');
+const replace = require('../dist/replace-x');
 
 /* Additional options that apply to `replace`, but not `search` */
-assign(opts, {
+const positionalArgs = {
   replacement: {
     position: 1,
-    help: 'Replacement string for matches',
-    type: 'string',
-    required: true,
+    string: true,
+    describe: 'Replacement string for matches',
+    demandOption: true,
   },
   paths: {
     position: 2,
-    help: "File or directory to search (default is '*')",
-    type: 'string',
-    list: true,
+    array: true,
+    describe: 'File or directory to search',
     default: ['*'],
   },
-  funcFile: {
-    abbr: 'f',
-    full: 'function-file',
-    metavar: 'PATH',
-    help: 'file containing JS replacement function',
+};
+
+const addlOptions = {
+  'function-file': {
+    alias: 'f',
+    describe: 'Path of file containing JS replacement function',
     hidden: true,
-  },
-  maxLines: {
-    string: '-n NUMLINES',
-    help: 'limit the number of lines to preview',
   },
   silent: {
     abbr: 's',
-    flag: true,
-    help: "Don't print out anything",
+    boolean: true,
+    describe: "Don't print out anything",
   },
   preview: {
     abbr: 'p',
-    flag: true,
-    help: "Preview the replacements, but don't modify files",
+    boolean: true,
+    describe: "Preview the replacements, but don't modify files",
   },
-});
+};
 
-const options = nomnom
-  .options(opts)
-  .script('replace-x')
-  .parse();
+const options = parseArguments('replace-x', positionalArgs, addlOptions);
+
 replace(options);
