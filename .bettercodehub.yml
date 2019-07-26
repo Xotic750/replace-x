@@ -1,0 +1,16 @@
+component_depth: 1
+languages:
+  - name: javascript
+    production:
+      exclude:
+        - /__tests__/.*
+    test:
+      include:
+        - /__tests__/.*
+exclude:
+  - /dist/.*
+  - /__tests__/coverage/.*
+  - /__tests__/__snapshots__/.*
+  - .*/webpack\.config\.js
+  - .*/jest\.config\.js
+  - .*/eslintrc\.js
