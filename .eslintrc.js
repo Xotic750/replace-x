@@ -68,6 +68,7 @@ module.exports = {
           'RangeErrorConstructor',
           'Readonly',
           'ReadonlyArray',
+          'Iterator',
         ],
       },
     ],

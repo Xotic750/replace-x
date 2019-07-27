@@ -6,5 +6,6 @@ module.exports = {
     'compat/compat': 'off',
     'prefer-rest-params': 'off',
     'no-prototype-builtins': 'off',
+    'jest/no-standalone-expect': 'warn',
   },
 };
