@@ -1,4 +1,10 @@
 module.exports = {
+  env: {
+    browser: true,
+    commonjs: true,
+    jest: true,
+    node: true,
+  },
   rules: {
     'jest/no-hooks': 'off',
     'no-void': 'off',
@@ -6,6 +12,9 @@ module.exports = {
     'compat/compat': 'off',
     'prefer-rest-params': 'off',
     'no-prototype-builtins': 'off',
-    'jest/no-standalone-expect': 'warn',
+    'jest/no-standalone-expect': 'off',
+    complexity: 'off',
+    'max-lines-per-function': 'off',
+    'max-params': 'off',
   },
 };
