@@ -7,14 +7,11 @@ module.exports = {
   /**
    * @see {@link https://eslint.org/docs/user-guide/configuring#specifying-environments}
    */
-  env: {
-    jest: false,
-    node: false,
-  },
+  env: {},
   /**
    * @see {@link https://eslint.org/docs/user-guide/configuring#extending-configuration-files}
    */
-  extends: ['@prorenata/eslint-config-vue'],
+  extends: ['@xotic750/eslint-config-recommended'],
 
   /**
    * You can define global variables here.
@@ -29,22 +26,7 @@ module.exports = {
    *
    * @see {@link https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns}
    */
-  overrides: [
-    {
-      files: ['webpack.config.js', '.eslintrc.js', 'jest.config.js'],
-      env: {
-        browser: true,
-        commonjs: true,
-        jest: false,
-        node: true,
-      },
-      rules: {
-        complexity: 'off',
-        'max-lines-per-function': 'off',
-        'max-params': 'off',
-      },
-    },
-  ],
+  overrides: [],
 
   /**
    * @see {@link https://eslint.org/docs/user-guide/configuring#specifying-parser-options}
@@ -64,17 +46,7 @@ module.exports = {
   /**
    * @see {@link https://eslint.org/docs/user-guide/configuring#configuring-rules}
    */
-  rules: {
-    'jsdoc/no-undefined-types': [
-      'error',
-      {
-        definedTypes: ['Readonly', 'ReadonlyArray'],
-      },
-    ],
-    complexity: ['warn', 6],
-    'max-lines-per-function': ['warn', {max: 15, skipBlankLines: true, skipComments: true}],
-    'max-params': ['error', 2],
-  },
+  rules: {},
 
   /**
    * Webpack-literate module resolution plugin for eslint-plugin-import.
