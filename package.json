@@ -45,7 +45,7 @@
     "security-fix": "npm run security -- fix",
     "start": "nodemon --exec \"npm run build\" --watch src",
     "test": "npm run build && npm run clean:coverage && jest",
-    "test:ci": "npm run test -- --ci --maxWorkers=2",
+    "test:ci": "npm run test -- --ci --maxWorkers=2 --coverage --coverageReporters=text-lcov | coveralls",
     "test:coverage": "npm run test -- --coverage"
   },
   "license": "MIT",
