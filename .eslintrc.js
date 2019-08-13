@@ -46,7 +46,9 @@ module.exports = {
   /**
    * @see {@link https://eslint.org/docs/user-guide/configuring#configuring-rules}
    */
-  rules: {},
+  rules: {
+    'max-classes-per-file': 'off',
+  },
 
   /**
    * Webpack-literate module resolution plugin for eslint-plugin-import.
