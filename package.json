@@ -75,7 +75,7 @@
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.2",
     "@types/webpack": "^4.39.1",
-    "@xotic750/eslint-config-recommended": "^1.1.7",
+    "@xotic750/eslint-config-recommended": "^1.1.8",
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
