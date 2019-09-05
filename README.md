@@ -24,12 +24,6 @@
   alt="npm version" height="18">
 </a>
 <a
-  href="https://www.jsdelivr.com/package/npm/replace-x"
-  title="jsDelivr hits">
-<img src="https://data.jsdelivr.com/v1/package/npm/replace-x/badge?style=rounded"
-  alt="jsDelivr hits" height="18">
-</a>
-<a
   href="https://bettercodehub.com/results/Xotic750/replace-x"
   title="bettercodehub score">
 <img src="https://bettercodehub.com/edge/badge/Xotic750/replace-x?branch=master"
